@@ -1,10 +1,12 @@
 //Initialized variables
 let score = 0;
+let coins_collected = 0;
 let is_game_running = false; 
 
 //Declared variables
 let end;
 let start;
+let reset;
 let timer;
 let left_side;
 let boundaries;
@@ -15,7 +17,7 @@ document.addEventListener("DOMContentLoaded", loadPage);
 
 function displayMessage(message){
     if(message != "")
-        status_display.innerHTML = message + "<br/>" + "Your Score is: " + score;
+        status_display.innerHTML = message ;
 }
 
 function gameOver(){
@@ -24,7 +26,7 @@ function gameOver(){
             boundaries[i].style.backgroundColor = "rgb(243, 159, 159)"; 
         if(score > 0)
             score = score - 1;
-        displayMessage("Game Over!");
+        displayMessage("Game Over!" + "<br/>" + "Your Score is: " + score);
         clearInterval(countdownInterval);
         is_game_running = false;
     }
@@ -52,7 +54,7 @@ function startGame(){
         for (let i = 0; i < boundaries.length; i++)
             boundaries[i].style.backgroundColor = "#eeeeee";
         end.style.visibility = "visible";
-        displayMessage("");
+        displayMessage("Game started!");
         is_game_running = true;
         countDown(10);
     }
@@ -63,20 +65,45 @@ function endGame(){
         for(let i = 0; i < boundaries.length; i++)
             boundaries[i].style.backgroundColor = "rgb(113 225 141)"; 
         score = score + 5;
-        displayMessage("You Won!");
+        displayMessage("You Won!" + "<br/>" + "Your Score is: " + score);
         clearInterval(countdownInterval);
         is_game_running = false;
     }
 }
 
+function resetGame() {
+
+    displayMessage(coins_collected + " coins collected and your score is: " + score);
+
+    setTimeout(() => {
+
+        score = 0;
+        coins_collected = 0;
+
+        clearInterval(countdownInterval);
+        timer.innerHTML = "Time left: 10s";
+        is_game_running = false;
+
+        for (let i = 0; i < boundaries.length; i++) 
+            boundaries[i].style.backgroundColor = "";
+
+        end.style.visibility = "hidden";
+
+        displayMessage("Game reset. Ready to start again!");
+    }, 2000);
+
+}
+
 function loadPage(){
     end = document.getElementById("end");
     start = document.getElementById("start");
+    reset = document.getElementById("reset");
     timer = document.getElementById("timer");
     boundaries = document.getElementsByClassName("boundary");
     status_display =  document.getElementById("status");
 
     end.addEventListener("mouseover", endGame);
+    reset.addEventListener("click", resetGame);
 
     start.addEventListener("mouseleave", function (event) {
         left_side = start.getBoundingClientRect();
@@ -92,5 +119,3 @@ function loadPage(){
         boundaries[i].addEventListener("mouseover", gameOver);
     }
 }
-
-

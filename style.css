@@ -129,3 +129,12 @@ neighboring elements.  Necessary to avoid giving ids to the boundary divs
 	justify-content: center;
 	align-items: center;
 }
+
+#reset {
+	height: 35px;
+	font-size: 20px;
+	font-weight: bold;
+	border: 2px rgb(255, 255, 255) solid;
+	background-color: rgb(209, 213, 214);
+	border-radius: 5px;
+}
