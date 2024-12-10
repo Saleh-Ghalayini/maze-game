@@ -5,9 +5,11 @@ let is_game_running = false;
 //Declared variables
 let end;
 let start;
+let timer;
 let left_side;
 let boundaries;
-let status_display; 
+let status_display;
+let countdownInterval; 
 
 document.addEventListener("DOMContentLoaded", loadPage);
 
@@ -23,26 +25,37 @@ function gameOver(){
         if(score > 0)
             score = score - 1;
         displayMessage("Game Over!");
+        clearInterval(countdownInterval);
         is_game_running = false;
     }
 }
 
+function countDown(duration) {
+    clearInterval(countdownInterval);
+    timer.innerHTML = "Time left: " + duration + "s";
+    timer.style.color = "black";
+
+    countdownInterval = setInterval(() => {
+      duration--;
+      timer.innerHTML = "Time left: " + duration + "s";
+      if (duration <= 0) {
+        clearInterval(countdownInterval);
+        timer.innerHTML = "Times up!";
+        timer.style.color = "rgb(243, 159, 159)";
+        gameOver();
+      }
+    }, 1000);
+  }
+
 function startGame(){
-    for(let i = 0; i < boundaries.length; i++)
-        boundaries[i].style.backgroundColor = "#eeeeee"; 
-    start.addEventListener("mouseleave", function (event) {
-        left_side = start.getBoundingClientRect()
-        if(event.clientX > left_side.right) {
-            is_game_running = true;
-            end.style.visibility = "visible";
-            displayMessage("");
-        } else if (event.clientX < left_side.left) {
-            displayMessage("You have to exit the Start box from the right side to start the game.");
-            end.style.visibility = "hidden";
-            is_game_running = false;
-        }
-            
-    });
+    if (!is_game_running) {
+        for (let i = 0; i < boundaries.length; i++)
+            boundaries[i].style.backgroundColor = "#eeeeee";
+        end.style.visibility = "visible";
+        displayMessage("");
+        is_game_running = true;
+        countDown(10);
+    }
 }
 
 function endGame(){
@@ -51,6 +64,7 @@ function endGame(){
             boundaries[i].style.backgroundColor = "rgb(113 225 141)"; 
         score = score + 5;
         displayMessage("You Won!");
+        clearInterval(countdownInterval);
         is_game_running = false;
     }
 }
@@ -58,11 +72,22 @@ function endGame(){
 function loadPage(){
     end = document.getElementById("end");
     start = document.getElementById("start");
+    timer = document.getElementById("timer");
     boundaries = document.getElementsByClassName("boundary");
     status_display =  document.getElementById("status");
 
     end.addEventListener("mouseover", endGame);
-    start.addEventListener("click", startGame);
+
+    start.addEventListener("mouseleave", function (event) {
+        left_side = start.getBoundingClientRect();
+        if (event.clientX > left_side.right) {
+            startGame();
+        } else if (event.clientX < left_side.left) {
+            displayMessage("You have to exit the Start box from the right side to start the game.");
+            end.style.visibility = "hidden";
+            is_game_running = false;
+        }
+    });
     for(let i = 0; i < boundaries.length; i++){
         boundaries[i].addEventListener("mouseover", gameOver);
     }

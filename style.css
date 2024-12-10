@@ -112,7 +112,7 @@ neighboring elements.  Necessary to avoid giving ids to the boundary divs
 	width: 98px;
 }
 
-.timer {
+#timer {
 	font-size: 24px;
 	font-family: sans-serif;
 	font-weight: bold;
