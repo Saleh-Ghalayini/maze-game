@@ -1,6 +1,6 @@
 //Initialized variables
-let is_game_running = false; 
 let score = 0;
+let is_game_running = false; 
 
 //Declared variables
 let end;
