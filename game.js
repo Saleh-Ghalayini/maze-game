@@ -8,6 +8,7 @@ let end;
 let start;
 let reset;
 let timer;
+let coins;
 let left_side;
 let boundaries;
 let status_display;
@@ -26,7 +27,7 @@ function gameOver(){
             boundaries[i].style.backgroundColor = "rgb(243, 159, 159)"; 
         if(score > 0)
             score = score - 1;
-        displayMessage("Game Over!" + "<br/>" + "Your Score is: " + score);
+        displayMessage("Game Over!" + "<br/>" + "Your Score is: " + score + ", and " + coins_collected + " coins collected.");
         clearInterval(countdownInterval);
         is_game_running = false;
     }
@@ -65,9 +66,17 @@ function endGame(){
         for(let i = 0; i < boundaries.length; i++)
             boundaries[i].style.backgroundColor = "rgb(113 225 141)"; 
         score = score + 5;
-        displayMessage("You Won!" + "<br/>" + "Your Score is: " + score);
+        displayMessage("You Won!" + "<br/>" + "Your Score is: " + score + ", and " + coins_collected + " coins collected.");
         clearInterval(countdownInterval);
         is_game_running = false;
+    }
+}
+
+function collectCoin(event) {
+    if (is_game_running) {
+        coins_collected++;
+        event.target.style.display = "none"; // Hide the clicked coin
+        //document.getElementById("coin-counter").innerText = coins_collected;
     }
 }
 
@@ -89,6 +98,9 @@ function resetGame() {
 
         end.style.visibility = "hidden";
 
+        for (let i = 0; i < coins.length; i++)
+            coins[i].style.display = "flex";
+
         displayMessage("Game reset. Ready to start again!");
     }, 2000);
 
@@ -99,8 +111,9 @@ function loadPage(){
     start = document.getElementById("start");
     reset = document.getElementById("reset");
     timer = document.getElementById("timer");
-    boundaries = document.getElementsByClassName("boundary");
+    coins = document.getElementsByClassName("coins");
     status_display =  document.getElementById("status");
+    boundaries = document.getElementsByClassName("boundary");
 
     end.addEventListener("mouseover", endGame);
     reset.addEventListener("click", resetGame);
@@ -118,4 +131,9 @@ function loadPage(){
     for(let i = 0; i < boundaries.length; i++){
         boundaries[i].addEventListener("mouseover", gameOver);
     }
+
+    for (let i = 0; i < coins.length; i++) {
+        coins[i].addEventListener("click", collectCoin);
+    }
+
 }
