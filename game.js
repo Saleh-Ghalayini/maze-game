@@ -12,9 +12,9 @@ let coins;
 let left_side;
 let boundaries;
 let status_display;
+let game_won_audio;
 let game_over_audio;
 let countdownInterval;
-let coin_game_won_audio;
 let coin_collected_audio; 
 
 document.addEventListener("DOMContentLoaded", loadPage);
@@ -32,6 +32,7 @@ function gameOver(){
             score = score - 1;
         displayMessage("Game Over!" + "<br/>" + "Your Score is: " + score + ", and " + coins_collected + " coins collected.");
         clearInterval(countdownInterval);
+        game_over_audio.play();
         is_game_running = false;
     }
 }
@@ -71,6 +72,7 @@ function endGame(){
         score = score + 5;
         displayMessage("You Won!" + "<br/>" + "Your Score is: " + score + ", and " + coins_collected + " coins collected.");
         clearInterval(countdownInterval);
+        game_won_audio.play();
         is_game_running = false;
     }
 }
@@ -78,8 +80,8 @@ function endGame(){
 function collectCoin(event) {
     if (is_game_running) {
         coins_collected++;
-        event.target.style.display = "none"; // Hide the clicked coin
-        //document.getElementById("coin-counter").innerText = coins_collected;
+        event.target.style.display = "none";
+        coin_collected_audio.play();
     }
 }
 
@@ -116,7 +118,10 @@ function loadPage(){
     timer = document.getElementById("timer");
     coins = document.getElementsByClassName("coins");
     status_display =  document.getElementById("status");
+    game_won_audio = document.getElementById("game-won");
+    game_over_audio = document.getElementById("game-over");
     boundaries = document.getElementsByClassName("boundary");
+    coin_collected_audio = document.getElementById("coin-collected");
 
     end.addEventListener("mouseover", endGame);
     reset.addEventListener("click", resetGame);
