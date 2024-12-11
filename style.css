@@ -3,6 +3,10 @@ Game Lab CSS file
 You don't need to download or edit this file.
 */
 
+body {
+	cursor: default;
+}
+
 h1, h2 {
 	text-align: center;
 }
