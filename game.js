@@ -12,7 +12,10 @@ let coins;
 let left_side;
 let boundaries;
 let status_display;
-let countdownInterval; 
+let game_over_audio;
+let countdownInterval;
+let coin_game_won_audio;
+let coin_collected_audio; 
 
 document.addEventListener("DOMContentLoaded", loadPage);
 
